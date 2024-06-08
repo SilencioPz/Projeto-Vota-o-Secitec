@@ -1,0 +1,48 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<img src="{{ url_for('imagem', nomeArquivo='secitec.png') }}" alt="Secitec">
+<style>
+    .btn-blue {
+        background-color: blue; 
+        color: white; 
+        display: block; 
+        width: 100px; 
+        margin: 0 auto; 
+    }
+</style>    
+<h1>Votação</h1>
+<form id="votingForm" method="POST">
+    {{ form.csrf_token }}
+    <div class="candidato">
+        <label>Digite o número do candidato:</label>
+        <input type="number" name="candidato_id" min="1" max="99">
+    </div>
+    <button type="button" style="background-color: green;" onclick="playSoundAndConfirm()">Confirmar</button>
+    <button type="reset" style="background-color: red;">Corrigir</button>
+    <a href="{{ url_for('index') }}" class="btn btn-default btn-blue">Voltar</a> 
+</form>
+<audio id="mySoundClip">
+    <source src="{{ url_for('static', filename='urna.mp3') }}" type="audio/mpeg">
+</audio>
+<script>
+    function playSoundAndConfirm() {
+        var confirmation = confirm("Confirmar seu voto?");
+        if (confirmation) {
+            var sound = document.getElementById("mySoundClip");
+            sound.onended = function() {
+                document.getElementById("votingForm").submit();
+            };
+            sound.play();
+        }
+    }
+</script>
+<div>
+    <h2>Candidatos</h2>
+    {% for candidato in candidatos %}
+        <div>
+            <img src="{{ url_for('imagem', nomeArquivo=candidato.imagem) }}" alt="{{ candidato.nome }}">
+            <p>Número: {{ candidato.id }} - {{ candidato.nome }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

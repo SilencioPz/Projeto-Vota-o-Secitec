@@ -1,0 +1,32 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<img src="{{ url_for('imagem', nomeArquivo='secitec.png') }}" alt="Secitec">
+    <form action="{{url_for('atualizar')}}" method="post" enctype="multipart/form-data">
+        <figure class="img thumbnail col-md-4">
+            <img class="img-fluid" src="{{ url_for('imagem', nomeArquivo='padrao.png') }}">
+            <figcaption>
+                <label class="fileContainer">
+                    Mudar Foto
+                    <input type="file" name="arquivo" accept=".png">
+                </label>
+            </figcaption>
+        </figure>
+        
+        <fieldset>
+            <input type="hidden" name="id" value={{candidato.id}} />
+            {{ form.csrf_token() }}
+            <div class="form-group">
+                {{ form.nome.label(class="form-label") }}
+                {{ form.nome(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.descricao.label(class="form-label") }} 
+                {{ form.descricao(class="form-control") }} 
+            </div>
+            <div class="form-group">
+                {{ form.salvar(class="btn btn-primary") }}
+                <a class="btn btn-danger" href="{{ url_for('index') }}">Voltar</a>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

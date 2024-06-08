@@ -1,0 +1,43 @@
+{% extends "template.html" %}
+{% block conteudo %}
+<img src="{{ url_for('imagem', nomeArquivo='secitec.png') }}" alt="Secitec">
+<style>
+    .btn-blue {
+        background-color: blue; 
+        color: white; 
+        display: block; 
+        width: 100px; 
+        margin: 0 auto; 
+    }
+    .barra-resultado {
+        height: 20px;
+        background-color: blue;
+    }
+</style>    
+<h1>Resultados</h1>
+<table>
+    <thead>
+        <tr>
+            <th>Foto</th>
+            <th>Candidato</th>
+            <th>Votos</th>
+            <th>Percentual</th>
+            <th>Gráfico</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for candidato in candidatos %}
+            <tr>
+                <td><img src="{{ url_for('imagem', nomeArquivo=candidato.imagem) }}" alt="{{ candidato.nome }}"></td>
+                <td>{{ candidato.nome }}</td>
+                <td>{{ candidato.votos|length }}</td> 
+                <td>{{ (candidato.votos|length / total_votos * 100) | round(2) }}%</td>
+                <td>
+                    <div class="barra-resultado" style="width: {{ (candidato.votos|length / total_votos * 100) | round(2) }}%;"></div>
+                </td>
+            </tr> 
+        {% endfor %}
+        <a href="{{ url_for('index') }}" class="btn btn-default btn-blue">Voltar</a>
+    </tbody>
+</table>
+{% endblock %}
